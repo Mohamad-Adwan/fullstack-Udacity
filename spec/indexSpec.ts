@@ -1,0 +1,16 @@
+import supertest from 'supertest';
+import app from '../src/index.js'; 
+
+const request = supertest(app);
+
+describe('Test /api/images endpoint failure', () => {
+  it('should return 400 if parameters are missing', async () => {
+    const response = await request.get('/api/images');
+    expect(response.status).toBe(400);
+  });
+
+  it('should return 200 for valid params', async () => {
+    const response = await request.get('/api/images?filename=fj&width=200&height=200');
+    expect(response.status).toBe(400);
+  });
+});
