@@ -1,9 +1,9 @@
-import sharp from "sharp";
-import path from "path";
-import fs from "fs";
+import sharp from 'sharp';
+import path from 'path';
+import fs from 'fs';
 
-const fullDir = path.join(path.resolve(), "images");
-const thumbDir = path.join(path.resolve(), "images/thumb");
+const fullDir = path.join(path.resolve(), 'images');
+const thumbDir = path.join(path.resolve(), 'images/thumb');
 
 export const resizeImage = async (
   filename: string,

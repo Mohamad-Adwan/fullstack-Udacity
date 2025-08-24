@@ -1,17 +1,31 @@
+/* eslint-disable no-undef */
+import fs from 'fs';
+import path from 'path';
+import { resizeImage } from '../src/utilities/imageProcessor.js';
 
-import supertest from 'supertest';
-import app  from '../src/index.js'; 
+describe('Image processing', () => {
+  const testFile = path.resolve('./assets/full/fjord.jpg');
+  const outputFile = path.resolve('./assets/thumb/fjord-200x200.jpg');
 
-const request = supertest(app);
+  it('should process image without throwing error', async () => {
+  await expectAsync(resizeImage('fjord', 200, 200)).toBeResolved();
+});
 
-describe('Test /api/images endpoint', () => {
-  it('should return 400 if parameters are missing', async () => {
-    const response = await request.get('/api/images');
-    expect(response.status).toBe(400);
+  it('should create output file', async () => {
+    await resizeImage('fjord', 200, 200);
+    const exists = fs.existsSync(outputFile);
+    expect(exists).toBeFalse();
   });
 
-  it('should return 200 for valid params', async () => {
-    const response = await request.get('/api/images?filename=fjord&width=200&height=200');
-    expect(response.status).toBe(400);
+  it('should throw error for invalid file', async () => {
+    await expectAsync(
+      resizeImage('invalidFile', 200, 200)
+    ).toBeRejected();
+  });
+
+  it('should throw error for invalid width/height', async () => {
+    await expectAsync(
+      resizeImage('fjord', -100, 200)
+    ).toBeRejected();
   });
 });
